@@ -1,0 +1,44 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="drv" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driversClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/dmv_db" />
+		<property name="username" value="root" />
+		<property name="password" value="2167"></property>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="drv" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.mapping.entity.Person</value>
+				<value>com.mapping.entity.PersonDetail</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+
+	</bean>
+
+		<bean id="personRepository"
+		class="com.mapping.repository.PersonRepository">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+		<bean id="personDetailRepository"
+		class="com.mapping.repository.PersonDetailRepository">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+		
+</beans>
